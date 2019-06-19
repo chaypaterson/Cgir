@@ -1,6 +1,7 @@
-#!/bin/python
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
 
-import sys
+import sys,cgi
 
 def hello():
     print("Hello!\n")
@@ -9,7 +10,26 @@ def hello():
 txticss = ("html{-webkit-text-size-adjust:100%;padding-bottom:4em}"+
 "body{font-family:sans-serif;line-height:1.5em;max-width:40em;padding:0"+
 "2%;margin:auto}.text-input{width:96%;display:block;padding:.5em"+
-"1%;margin-bottom:1.5em;font-size:1em}fieldset{margin-bottom:1.5em}textarea{height:10em}dt{font-weight:bold}.important{color:red}.footer{text-align:right}.centered{text-align:center}.nope{display:none}.ad-container{float:left;min-width:33%}")
+"1%;margin-bottom:1.5em;font-size:1em}fieldset{margin-bottom:1.5em}"+
+"textarea{height:10em}dt{font-weight:bold}.important{color:red}."+
+"footer{text-align:right}.centered{text-align:center}.nope{display:none}"+
+".ad-container{float:left;min-width:33%}")
+
+def htmlify(txt):
+    # escape special characters
+    htmlcodes = {
+        "\'" : "\\\'",
+        "\"" : "\\\"",
+        "‘" : "&lsquo;",
+        "’" : "&rsquo;",
+        "—" : "&mdash;",
+        "–" : "&mdash;"
+    }
+
+    for key in htmlcodes:
+        txt = txt.replace(key,htmlcodes[key])
+
+    return txt
 
 def readfile(txtfile, start):
     ps = []
@@ -22,10 +42,13 @@ def readfile(txtfile, start):
         doc = open(txtfile,"r")
         doc.seek(start*bytes,0)
         txt = doc.read(bytes)
+        # deal with special characters in txt:
+        txt = htmlify(txt)
         doc.close()
 
     # break into a list of paragraphs
     ps = txt.split("\n\n")
+    # deal with special characters?
 
     # return the list of paragraphs
     return ps
@@ -49,7 +72,7 @@ def returnpage(ps, start, end):
     print("<body>")
 
     for pp in ps:
-        print("<p>"+str(pp)+"</p>")
+        print("<p>"+str(pp)+"</p>".encode('utf-8'))
 
     # make a note of position in text:
     prevpg = start-1
@@ -57,12 +80,10 @@ def returnpage(ps, start, end):
 
     # print navigation bar
     if (start > 0):
-        print("<a href=\"./cgir.py?arg1=%s\">Back</a>" % prevpg)
-
-    print("<p>%s/%s</p>" % (start, end) )
+        print("<a href=\"./cgir.cgi?arg1=%s\">Back</a>" % prevpg)
 
     if (start < end):
-        print("<a href=\"./cgir.py?arg1=%s\">Next</a>" % nextpg)
+        print("<a href=\"./cgir.cgi?arg1=%s\">Next</a>" % nextpg)
 
     print("</body>")
     print("</html>")
@@ -79,17 +100,26 @@ def howlong(textfile):
 
 def main():
     # which story to read:
-    foo = "curious.txt"
+    foo = "./cgi-bin/curious.txt"
     # get length of story (in pages):
     end = howlong(foo)
 
-    # Get position to read from:
+    # Get page to read from:
+    # from argv:
     if (len(sys.argv)>1):
         start = int(sys.argv[1]) # opening page
     else:
         start = 0
 
-    start = start % end # just in case of malformed/malicious output
+    # argv is good for testing but not 100% compatible with cgi
+    form = cgi.FieldStorage()
+    if 'arg1' not in form:
+        start = 0
+    else:
+        start = int(form['arg1'].value)
+
+    if start > end:
+        start = 0
 
     # read text page from file
     ps = readfile(foo, start)

@@ -11,3 +11,11 @@ This Python script should:
     back buttons.
 
 That's it.
+
+---
+
+How to run:
+    1. Place a text file in the cgi-bin/ directory.
+    2. Start python -m CGIHTTPServer
+
+That's it.
