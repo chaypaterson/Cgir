@@ -1,5 +1,5 @@
-CGI READER
-----------
+# CGI READER
+-----------
 
 This is a CGI script/simple web framework that prints pages in a directory (or
 a text file, page by page), with some formatting options.
