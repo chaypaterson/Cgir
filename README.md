@@ -16,6 +16,7 @@ That's it.
 ---
 
 How to run:
+
     * Place a text file in the cgi-bin/ directory.
     * Start python -m CGIHTTPServer
 
