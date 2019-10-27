@@ -100,9 +100,9 @@ def howlong(textfile):
 
 def main():
     # which story to read:
-    foo = "./cgi-bin/curious.txt"
+    txtfile = "./cgi-bin/curious.txt"
     # get length of story (in pages):
-    end = howlong(foo)
+    end = howlong(txtfile)
 
     # Get page to read from:
     # from argv:
@@ -122,7 +122,7 @@ def main():
         start = 0
 
     # read text page from file
-    ps = readfile(foo, start)
+    ps = readfile(txtfile, start)
     # format web page
     returnpage(ps, start, end)
 

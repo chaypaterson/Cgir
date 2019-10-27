@@ -18,6 +18,6 @@ That's it.
 How to run:
 
     * Place a text file in the cgi-bin/ directory.
-    * Start python -m CGIHTTPServer
-
-That's it.
+    * Change the "txtfile" variable in cgi-bin/cgir.cgi to point to the target
+      file.
+    * Start the script with "python -m CGIHTTPServer"
