@@ -72,7 +72,8 @@ def returnpage(ps, start, end):
     print("<body>")
 
     for pp in ps:
-        print("<p>"+str(pp)+"</p>".encode('utf-8'))
+        txtline="<p>"+str(pp)+"</p>"
+        print(txtline.encode('utf-8'))
 
     # make a note of position in text:
     prevpg = start-1
