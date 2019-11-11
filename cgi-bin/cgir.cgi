@@ -89,6 +89,24 @@ def returnpage(ps, start, end):
     print("</body>")
     print("</html>")
 
+# Unit tests:
+
+def string_to_dict(inString):
+    # iteratively build a dictionary from a string
+    # 1 parse string: split it at spaces.
+    # 2 put in a dictionary where we can retrieve the nth word in a string 
+    # by asking for its number.
+    nthWordStr = inString.split(" ")
+    n=1
+    outDict={} # empty dictionary
+    for word in nthWordStr:
+        outDict[n] = word
+        # keys should be unique, so n should be the key
+        # and word should be the value! this returned an error.
+        n+=1
+
+    return outDict
+
 def howlong(textfile):
     doc = open(textfile, "r")
     length = len(doc.read())/2745
